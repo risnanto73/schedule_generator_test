@@ -8,6 +8,7 @@ class ScheduleService {
   static const String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
+
   static Future<String> generateSchedule(String scheduleName, String priority, String duration, String fromDate, String untilDate) async {
     if (_apiKey.isEmpty) {
       return "Error: API key tidak ditemukan!";

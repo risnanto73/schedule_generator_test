@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:schedule_generator_test/ui/schedule_gemini.dart';
+import 'package:schedule_generator_test/ui/schedule_gemini_page.dart';
+import 'package:schedule_generator_test/ui/schedule_open_ai_page.dart';
 
 void main() async {
   await dotenv.load();
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const ScheduleGeminiPage(),
+      home: const ScheduleOpenAiPage(),
     );
   }
 }
