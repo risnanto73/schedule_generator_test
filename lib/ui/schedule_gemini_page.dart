@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:schedule_generator_test/ui/schedule_list.dart';
+import '../database/schedule_database.dart';
 import '../service/schedule_service.dart';
 
 class ScheduleGeminiPage extends StatefulWidget {
@@ -62,7 +64,20 @@ class _ScheduleGeminiPageState extends State<ScheduleGeminiPage> {
       _scheduleResult = result;
       _isLoading = false;
     });
+
+    // Simpan ke database
+    final newSchedule = {
+      'name': _scheduleNameController.text,
+      'priority': _selectedPriority,
+      'duration': _durationController.text,
+      'fromDate': fromDate,
+      'untilDate': untilDate,
+      'result': result,
+    };
+
+    await ScheduleDatabase.instance.insertSchedule(newSchedule);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +110,30 @@ class _ScheduleGeminiPageState extends State<ScheduleGeminiPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _isLoading ? null : generateSchedule,
-        backgroundColor: Colors.deepPurple,
-        icon: const Icon(Icons.auto_awesome),
-        label: const Text("Generate"),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.extended(
+            heroTag: "generate",
+            onPressed: _isLoading ? null : generateSchedule,
+            backgroundColor: Colors.deepPurple,
+            icon: const Icon(Icons.auto_awesome),
+            label: const Text("Generate"),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton.extended(
+            heroTag: "view",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ScheduleListPage()),
+              );
+            },
+            backgroundColor: Colors.blue,
+            icon: const Icon(Icons.list),
+            label: const Text("Lihat Jadwal"),
+          ),
+        ],
       ),
     );
   }
